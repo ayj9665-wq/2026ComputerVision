@@ -1,12 +1,13 @@
-# Assignment 05 : Linear Classifier on CIFAR-10
+# Assignment 05 : Linear Classifier with Random Weights on CIFAR-10
 
-Linear classifier $f(x, W) = Wx + b$ on raw CIFAR-10 pixels (3072-dim) with SVM (hinge) loss and Softmax (cross-entropy) loss, using scikit-learn.
+How a linear classifier $f(x) = Wx + b$ computes class scores and predictions with randomly initialized weights. The model is not trained.
 
-- SVM : `SGDClassifier(loss='hinge')`, stochastic gradient descent for 10 epochs
-- Softmax : `LogisticRegression`, lbfgs for 100 iterations
-
-The regularization strength is chosen by 5-fold cross-validation (`GridSearchCV`, same folds as Assignment 04).
-The 10,000 test images are used only for the final evaluation.
+- $W$ : 10 x 3072 from $N(0, 0.01^2)$ with seed 1, $b$ : zeros
+- Class scores and predictions for 10 example images (first test image of each class)
+- Multiclass SVM hinge loss, checked with the lecture example ($L$ = 5.27)
+- Softmax : scores vs probabilities, every row sums to 1
+- Correct and misclassified examples
+- Each row of $W$ shown as a 32 x 32 x 3 image
 
 ## Files
 
@@ -15,7 +16,7 @@ The 10,000 test images are used only for the final evaluation.
 | `CV_Assignment_05.ipynb` | Notebook, with all outputs saved |
 | `requirements.txt` | Python packages used by the notebook |
 
-The dataset is the same as in Assignment 04 and is not copied again : the notebook reads `../Assignment04/cifar-10-batches-py/`.
+The dataset is the same as in Assignment 04 and is not copied again : the notebook reads `../Assignment04/cifar-10-batches-py/test_batch`.
 
 ## Run
 
@@ -25,17 +26,17 @@ pip install -r requirements.txt
 jupyter notebook CV_Assignment_05.ipynb
 ```
 
-Start Jupyter from `Assignment05/` so the relative data path works.
-The whole notebook takes about 15 min, mostly the 5-fold CV of `LogisticRegression`.
+Start Jupyter from `Assignment05/` so the relative data path works. The notebook runs in a few seconds.
 The saved outputs were produced with Python 3.9.6.
 
 ## Results
 
-| Model | Best setting (5-fold) | 5-fold Accuracy | Test Accuracy | Test Precision | Test Recall | Test F1 | Test time |
-|---|---|---|---|---|---|---|---|
-| **Softmax** | **C = 0.001** | **0.4134 ± 0.0048** | **0.4177** | **0.4139** | **0.4177** | **0.4147** | **0.20 s** |
-| SVM | alpha = 0.001 | 0.3887 ± 0.0048 | 0.3942 | 0.3980 | 0.3942 | 0.3945 | 0.52 s |
-| KNN L1 (Assignment 04) | k = 5 | 0.3791 ± 0.0030 | 0.3921 | 0.4560 | 0.3921 | 0.3890 | 302 s |
+| | Value |
+|---|---|
+| Average SVM loss (10 images) | 9.189 (about 9 is expected for an untrained model) |
+| Softmax probabilities | 0.039 ~ 0.180, every row sums to 1 |
+| Correct among the 10 examples | 1 (airplane) |
+| Correct on all 10,000 test images | 1013 (about chance level, 10%) |
 
 ## Dataset
 
